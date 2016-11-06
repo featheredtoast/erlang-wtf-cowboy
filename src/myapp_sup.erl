@@ -28,7 +28,14 @@ start_link() ->
 
 %% Child :: {Id,StartFunc,Restart,Shutdown,Type,Modules}
 init([]) ->
-    {ok, { {one_for_all, 0, 1}, []} }.
+    WebSup = #{id => 'web_sup',
+               start => {'web_sup', start_link, []},
+               restart => permanent,
+               shutdown => 5000,
+               type => supervisor,
+               modules => ['web_sup']},
+
+    {ok, { {one_for_all, 0, 1}, [WebSup]} }.
 
 %%====================================================================
 %% Internal functions
