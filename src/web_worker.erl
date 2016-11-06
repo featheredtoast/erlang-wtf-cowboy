@@ -57,7 +57,8 @@ init([]) ->
 
 start_cowboy() ->
     Dispatch = cowboy_router:compile([
-        {'_', [{"/", web_handler, []}]}
+        {'_', [{"/", web_handler, []},
+               {"/hats/:name", hats_handler, []}]}
     ]),
     cowboy:start_http(my_http_listener, 100, [{port, 8080}],
         [{env, [{dispatch, Dispatch}]}]
