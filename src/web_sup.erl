@@ -50,10 +50,9 @@ start_link() ->
 %% @end
 %%--------------------------------------------------------------------
 init([]) ->
-
     SupFlags = #{strategy => one_for_one,
-                 intensity => 1,
-                 period => 5},
+                 intensity => 1000,
+                 period => 1},
 
     WebWorker = #{id => 'web_worker',
                start => {'web_worker', start_link, []},

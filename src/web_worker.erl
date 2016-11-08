@@ -51,8 +51,8 @@ start_link() ->
 %% @end
 %%--------------------------------------------------------------------
 init([]) ->
-    process_flag(trap_exit, true),
-    start_cowboy(),
+    {ok, CowboyPid} = start_cowboy(),
+    link(CowboyPid),
     {ok, #state{}}.
 
 start_cowboy() ->
@@ -106,6 +106,7 @@ handle_cast(_Msg, State) ->
 %% @end
 %%--------------------------------------------------------------------
 handle_info(_Info, State) ->
+    io:fwrite("info: \n"),
     {noreply, State}.
 
 %%--------------------------------------------------------------------
@@ -119,7 +120,8 @@ handle_info(_Info, State) ->
 %% @spec terminate(Reason, State) -> void()
 %% @end
 %%--------------------------------------------------------------------
-terminate(_Reason, _State) ->
+terminate(Reason, _State) ->
+    io:fwrite("ending web with state: \n" ++ Reason),
     cowboy:stop_listener(my_http_listener),
     ok.
 
@@ -132,6 +134,7 @@ terminate(_Reason, _State) ->
 %% @end
 %%--------------------------------------------------------------------
 code_change(_OldVsn, State, _Extra) ->
+    io:fwrite("code update: \n"),
     {ok, State}.
 
 %%%===================================================================
